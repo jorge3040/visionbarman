@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Barman | Mixología de Autor & Coctelería de Lujo en Perú</title>
+    <!-- Fuentes Elegantes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variables de Diseño */
+        :root {
+            --bg-pure-black: #050505;
+            --bg-deep-dark: #0d0d0d;
+            --bg-card: #141414;
+            --gold-gradient: linear-gradient(135deg, #F5E0A5 0%, #D4AF37 50%, #A37E1C 100%);
+            --gold-solid: #D4AF37;
+            --amber-accent: #E5A93B;
+            --text-light: #F5F5F7;
+            --text-muted: #A0A0A5;
+            --border-color: rgba(212, 175, 55, 0.15);
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Reset y Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-pure-black);
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Utilidades de Animación */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition-smooth);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 1. Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--gold-solid);
+        }
+
+        .nav-cta {
+            border: 1px solid var(--gold-solid);
+            padding: 0.6rem 1.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-cta:hover {
+            background: var(--gold-solid);
+            color: var(--bg-pure-black);
+            box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Menú Hamburguesa Móvil */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background-color: var(--gold-solid);
+            transition: var(--transition-smooth);
+        }
+
+        /* 2. Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            padding: 0 1rem;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.25) contrast(1.1);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 30%, var(--bg-pure-black) 95%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 900px;
+        }
+
+        .hero-subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--amber-accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            line-height: 1.15;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+        }
+
+        .hero-title span {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .hero-desc {
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            color: var(--text-muted);
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background: var(--gold-gradient);
+            color: var(--bg-pure-black);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            padding: 1.1rem 2.8rem;
+            border-radius: 0;
+            transition: var(--transition-smooth);
+            border: none;
+            box-shadow: 0px 5px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 10px 30px rgba(212, 175, 55, 0.45);
+        }
+
+        /* 3. Galería de Cocteles de Autor */
+        .gallery-section {
+            padding: 8rem 2rem;
+            background-color: var(--bg-pure-black);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold-solid);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .cocktail-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .cocktail-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--border-color);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.05);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            height: 380px;
+            overflow: hidden;
+        }
+
+        .cocktail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .cocktail-card:hover .cocktail-img {
+            transform: scale(1.08);
+        }
+
+        .cocktail-card-content {
+            padding: 2.2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .cocktail-name {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .ingredients-list {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .ingredients-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gold-solid);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .ingredients-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .note-wrapper {
+            position: relative;
+            padding-left: 1rem;
+            border-left: 2px solid var(--amber-accent);
+            margin-top: auto;
+        }
+
+        .note-text {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--text-muted);
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* 4. La Experiencia */
+        .experience-section {
+            padding: 8rem 2rem;
+            background-color: var(--bg-deep-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .experience-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .experience-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .experience-desc {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .experience-pillars {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .pillar-card {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .pillar-title {
+            font-size: 1.15rem;
+            color: var(--gold-solid);
+            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+        }
+
+        .pillar-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .experience-img-block {
+            position: relative;
+        }
+
+        .exp-frame {
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .exp-img {
+            width: 100%;
+            height: 550px;
+            object-fit: cover;
+            filter: grayscale(20%) brightness(0.85);
+        }
+
+        /* 5. Agendamiento de Consultas Privadas */
+        .booking-section {
+            padding: 8rem 2rem;
+            background-color: var(--bg-pure-black);
+        }
+
+        .booking-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 4rem 3.5rem;
+            border-radius: 4px;
+        }
+
+        .booking-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-full {
+            grid-column: span 2;
+        }
+
+        .form-group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            transition: var(--transition-smooth);
+        }
+
+        .form-control {
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.8rem 0;
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .form-control:focus {
+            border-color: var(--gold-solid);
+        }
+
+        select.form-control {
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        select.form-control option {
+            background-color: var(--bg-card);
+            color: var(--text-light);
+        }
+
+        .form-submit-btn {
+            width: 100%;
+            background: var(--gold-gradient);
+            color: var(--bg-pure-black);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-size: 0.85rem;
+            padding: 1.2rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1);
+            margin-top: 1rem;
+        }
+
+        .form-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.35);
+        }
+
+        /* 6. Footer */
+        .footer {
+            background-color: var(--bg-pure-black);
+            padding: 5rem 2rem 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand h4 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 320px;
+            font-weight: 300;
+        }
+
+        .footer-links-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold-solid);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-link {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footer-link:hover {
+            color: var(--text-light);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+            .experience-container {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+            .experience-img-block {
+                order: -1;
+            }
+            .exp-img {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 1.5rem;
+            }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 75%;
+                background-color: var(--bg-deep-dark);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2.5rem;
+                transition: var(--transition-smooth);
+                z-index: 999;
+                border-left: 1px solid var(--border-color);
+            }
+            .nav-links.active {
+                right: 0;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .hero-content {
+                padding: 0 1rem;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .booking-container {
+                padding: 2.5rem 1.5rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .form-full {
+                grid-column: auto;
+            }
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">VISION BARMAN</a>
+            <div class="nav-links" id="navLinks">
+                <a href="#inicio" class="nav-link active">Inicio</a>
+                <a href="#galeria" class="nav-link">Coctelería</a>
+                <a href="#experiencia" class="nav-link">La Experiencia</a>
+                <a href="#agenda" class="nav-link nav-cta">Reservar Sesión</a>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Hero Section -->
+    <header class="hero" id="inicio">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1920&q=80" alt="Mixología Molecular Premium">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle reveal">Alta Mixología en Perú</p>
+            <h1 class="hero-title reveal">Mixología de Autor para <span>Experiencias Inolvidables</span></h1>
+            <p class="hero-desc reveal">Elevamos los eventos más prestigiosos y exclusivos del país. Una fusión sofisticada de ciencia, arte y coctelería molecular adaptada a la identidad de tu celebración.</p>
+            <a href="#agenda" class="hero-btn reveal">Diseñar mi Carta Privada</a>
+        </div>
+    </header>
+
+    <!-- 3. Galería de Cocteles de Autor -->
+    <section class="gallery-section" id="galeria">
+        <div class="section-header reveal">
+            <p class="section-subtitle">Alta Coctelería</p>
+            <h2 class="section-title">El Arte Líquido</h2>
+        </div>
+
+        <div class="gallery-grid">
+            <!-- Coctel 1 -->
+            <div class="cocktail-card reveal">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80" alt="Cóctel Oro de los Andes" class="cocktail-img">
+                </div>
+                <div class="cocktail-card-content">
+                    <h3 class="cocktail-name">Oro de los Andes</h3>
+                    <div class="ingredients-list">
+                        <span class="ingredients-label">Ingredientes</span>
+                        <p class="ingredients-text">Pisco Quebranta premium, cordial de muña, aire cítrico molecular, hojuelas de oro de 24k comestibles.</p>
+                    </div>
+                    <div class="note-wrapper">
+                        <p class="note-text">"Un homenaje a nuestra herencia andina, reimaginado con una estructura visual etérea y texturas contrastantes."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coctel 2 -->
+            <div class="cocktail-card reveal">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80" alt="Cóctel Humo Ancestral" class="cocktail-img">
+                </div>
+                <div class="cocktail-card-content">
+                    <h3 class="cocktail-name">Humo Ancestral</h3>
+                    <div class="ingredients-list">
+                        <span class="ingredients-label">Ingredientes</span>
+                        <p class="ingredients-text">Destilado premium, reducción de piña asada, toques botánicos locales, ahumado directo con madera de cerezo.</p>
+                    </div>
+                    <div class="note-wrapper">
+                        <p class="note-text">"El sabor terroso y ahumado despierta los sentidos antes del primer sorbo mediante una densa nube aromática."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coctel 3 -->
+            <div class="cocktail-card reveal">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=600&q=80" alt="Cóctel Elixir del Amazonas" class="cocktail-img">
+                </div>
+                <div class="cocktail-card-content">
+                    <h3 class="cocktail-name">Caviar del Amazonas</h3>
+                    <div class="ingredients-list">
+                        <span class="ingredients-label">Ingredientes</span>
+                        <p class="ingredients-text">Ginebra infusionada con frutos amazónicos, caviar esferificado de curaçao azul, agua tónica artesanal.</p>
+                    </div>
+                    <div class="note-wrapper">
+                        <p class="note-text">"La acidez del camu camu encapsulada en esferas moleculares que explotan delicadamente en boca."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. La Experiencia -->
+    <section class="experience-section" id="experiencia">
+        <div class="experience-container">
+            <div class="experience-content reveal">
+                <p class="section-subtitle">Vanguardia y Detalle</p>
+                <h2 class="section-title" style="margin-bottom: 2rem;">La Experiencia Sensorial</h2>
+                <p class="experience-desc">No ofrecemos un servicio de barra convencional. Diseñamos espectáculos visuales y gustativos a través de técnicas de vanguardia como esferificaciones inversas, espumas nitrogenadas, hielo tallado a mano y clarificados perfectos.</p>
+                <p class="experience-desc">Utilizamos exclusivamente cristalería fina importada de cristal de Bohemia y destilados de colección para que cada cóctel sea una obra de arte interactiva en el evento más importante de tu agenda.</p>
+                
+                <div class="experience-pillars">
+                    <div class="pillar-card">
+                        <h4 class="pillar-title">Mixología Molecular</h4>
+                        <p class="pillar-desc">Texturas científicamente diseñadas para potenciar el perfil aromático de cada destilado.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <h4 class="pillar-title">Estética Sobria</h4>
+                        <p class="pillar-desc">Barras arquitectónicas oscuras que actúan como lienzos para la luz y el color de los elixires.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="experience-img-block reveal">
+                <div class="exp-frame">
+                    <img src="https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?auto=format&fit=crop&w=800&q=80" alt="Barman Premium" class="exp-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Agendamiento de Consultas Privadas -->
+    <section class="booking-section" id="agenda">
+        <div class="booking-container reveal">
+            <div class="booking-header">
+                <p class="section-subtitle">Diseño de Carta de Autor</p>
+                <h2 class="section-title">Agendar Asesoría Privada</h2>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 1rem; font-weight: 300;">Definamos los detalles, estilos y cócteles insignia para tu próximo evento exclusivo en Perú.</p>
+            </div>
+
+            <form id="whatsappForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Nombre Completo</label>
+                        <input type="text" id="fullName" class="form-control" placeholder="Ej. Alejandra Valdivia" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDate" class="form-label">Fecha del Evento</label>
+                        <input type="date" id="eventDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guestCount" class="form-label">Número de Invitados</label>
+                        <input type="number" id="guestCount" class="form-control" placeholder="Ej. 150" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventType" class="form-label">Estilo de Evento</label>
+                        <select id="eventType" class="form-control" required>
+                            <option value="" disabled selected>Selecciona una opción</option>
+                            <option value="Boda Premium">Boda de Alta Gama</option>
+                            <option value="Corporativo VIP">Lanzamiento o Corporativo VIP</option>
+                            <option value="Celebracion Privada">Celebración Privada o Cumpleaños</option>
+                            <option value="Experiencia Molecular">Masterclass o Cata Molecular Privada</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-full">
+                        <label for="details" class="form-label">Notas Especiales o Preferencias de Destilados</label>
+                        <textarea id="details" class="form-control" rows="3" placeholder="Ej. Deseo énfasis en cócteles a base de gin clarificado y hielo con logo grabado..."></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="form-submit-btn">Solicitar Asesoría Personalizada</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 6. Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h4>VISION BARMAN</h4>
+                <p>Curadores de momentos inolvidables a través de la coctelería de autor y la ciencia de los destilados más finos de Perú.</p>
+            </div>
+            <div>
+                <h5 class="footer-links-title">Secciones</h5>
+                <ul class="footer-links">
+                    <li><a href="#inicio" class="footer-link">Inicio</a></li>
+                    <li><a href="#galeria" class="footer-link">Coctelería</a></li>
+                    <li><a href="#experiencia" class="footer-link">La Experiencia</a></li>
+                    <li><a href="#agenda" class="footer-link">Reservas</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5 class="footer-links-title">Contacto Directo</h5>
+                <ul class="footer-links">
+                    <li><a href="https://wa.me/584127401944" class="footer-link" target="_blank">+58 412 740 1944</a></li>
+                    <li><a href="mailto:info@visionbarman.com" class="footer-link">info@visionbarman.com</a></li>
+                    <li><span class="footer-link" style="cursor: default;">Lima, Perú</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Vision Barman. Todos los derechos reservados.</p>
+            <p>Diseño & Experiencia Digital de Alta Gama</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript para Interacciones y Lógica -->
+    <script>
+        // 1. Efectos de revelado con scroll (Intersection Observer)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Dejar de observar una vez animado
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(revealCallback, observerOptions);
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+        // 2. Control de Menú Móvil
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        const links = document.querySelectorAll('.nav-link');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            // Animación sencilla del botón hamburguesa
+            const spans = menuToggle.querySelectorAll('span');
+            spans[0].style.transform = navLinks.classList.contains('active') ? 'rotate(45deg) translate(5px, 6px)' : 'none';
+            spans[1].style.opacity = navLinks.classList.contains('active') ? '0' : '1';
+            spans[2].style.transform = navLinks.classList.contains('active') ? 'rotate(-45deg) translate(5px, -6px)' : 'none';
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const spans = menuToggle.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            });
+        });
+
+
+        // 3. Highlight de navegación activa según scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('header, section');
+            const scrollPosition = window.scrollY + 150;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            links.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+
+        // 4. Integración de Formulario Directo a WhatsApp
+        document.getElementById('whatsappForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Capturar datos del formulario
+            const name = document.getElementById('fullName').value.trim();
+            const date = document.getElementById('eventDate').value;
+            const guests = document.getElementById('guestCount').value.trim();
+            const type = document.getElementById('eventType').value;
+            const details = document.getElementById('details').value.trim() || 'Sin comentarios adicionales';
+
+            // Formatear mensaje sofisticado para WhatsApp
+            const message = 
+`*SOLICITUD DE ASESORÍA PRIVADA - VISION BARMAN*
+
+*Cliente:* ${name}
+*Fecha de Evento:* ${date}
+*Invitados:* ${guests} personas
+*Estilo de Experiencia:* ${type}
+
+*Preferencias y Detalles:*
+"${details}"
+
+_Solicito formalmente propuesta formal para coordinar una llamada de asesoramiento._`;
+
+            // Codificar el texto y armar enlace
+            const encodedText = encodeURIComponent(message);
+            const whatsappNumber = "584127401944";
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedText}`;
+
+            // Abrir en pestaña nueva
+            window.open(whatsappUrl, '_blank');
+        });
+    </script>
+</body>
+</html>
